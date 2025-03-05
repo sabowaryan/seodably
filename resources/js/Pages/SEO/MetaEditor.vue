@@ -209,7 +209,7 @@
             <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Titre
               <span class="text-xs text-gray-500 ml-1">
-                ({{ formData.title ? formData.title.length : 0 }}/{{ config.max_title_length }} caractères)
+                ({{ titleLength }}/{{ config.max_title_length }} caractères)
               </span>
             </label>
             <input 
@@ -217,10 +217,19 @@
               v-model="formData.title" 
               type="text" 
               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              :class="{'border-red-500': formData.title && formData.title.length > config.max_title_length}"
+              :class="{'border-red-500': isTitleTooLong}"
             />
-            <div v-if="formData.title && formData.title.length > config.max_title_length" class="text-red-500 text-xs mt-1">
-              Le titre est trop long
+            <div class="mt-2">
+              <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                <div 
+                  class="h-2 rounded-full transition-all duration-300"
+                  :class="getProgressColorClass(titleProgress)"
+                  :style="{ width: Math.min(100, titleProgress) + '%' }"
+                ></div>
+              </div>
+            </div>
+            <div v-if="isTitleTooLong" class="text-red-500 text-xs mt-1">
+              Le titre dépasse la longueur maximale recommandée
             </div>
           </div>
           
@@ -228,7 +237,7 @@
             <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Description
               <span class="text-xs text-gray-500 ml-1">
-                ({{ formData.description ? formData.description.length : 0 }}/{{ config.max_description_length }} caractères)
+                ({{ descriptionLength }}/{{ config.max_description_length }} caractères)
               </span>
             </label>
             <textarea 
@@ -236,10 +245,19 @@
               v-model="formData.description" 
               rows="3"
               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              :class="{'border-red-500': formData.description && formData.description.length > config.max_description_length}"
+              :class="{'border-red-500': isDescriptionTooLong}"
             ></textarea>
-            <div v-if="formData.description && formData.description.length > config.max_description_length" class="text-red-500 text-xs mt-1">
-              La description est trop longue
+            <div class="mt-2">
+              <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                <div 
+                  class="h-2 rounded-full transition-all duration-300"
+                  :class="getProgressColorClass(descriptionProgress)"
+                  :style="{ width: Math.min(100, descriptionProgress) + '%' }"
+                ></div>
+              </div>
+            </div>
+            <div v-if="isDescriptionTooLong" class="text-red-500 text-xs mt-1">
+              La description dépasse la longueur maximale recommandée
             </div>
           </div>
         </div>
